@@ -1,6 +1,6 @@
 {
   "name": "css-slam",
-  "version": "2.1.2",
+  "version": "2.1.2-cssclean",
   "description": "Minimal CSS, fast",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
@@ -10,6 +10,8 @@
   "author": "The Polymer Authors",
   "license": "BSD-3-Clause",
   "dependencies": {
+    "@types/clean-css": "^3.4.30",
+    "clean-css": "^4.2.1",
     "command-line-args": "^5.0.2",
     "command-line-usage": "^5.0.5",
     "dom5": "^3.0.0",

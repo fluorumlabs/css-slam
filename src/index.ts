@@ -12,6 +12,7 @@ import * as parse5 from 'parse5';
 import * as shadyCSS from 'shady-css-parser';
 import * as stream from 'stream';
 import * as vinyl from 'vinyl';
+import * as CleanCSS from 'clean-css';
 
 class NoCommentStringifier extends shadyCSS.Stringifier {
   comment(node: shadyCSS.Comment) {
@@ -23,7 +24,10 @@ class NoCommentStringifier extends shadyCSS.Stringifier {
   }
 }
 
+// Use default options for CleanCSS
+const options = {};
 const parser = new shadyCSS.Parser();
+const cleaner = new CleanCSS(options);
 const stringifier = new NoCommentStringifier();
 const pred = dom5.predicates;
 const isInlineStyle = pred.AND(
@@ -45,6 +49,7 @@ export function html(text: string) {
       ast, isInlineStyle, dom5.childNodesIncludeTemplate);
   for (const styleNode of styleNodes) {
     const text = dom5.getTextContent(styleNode);
+
     dom5.setTextContent(styleNode, css(text));
   }
   return parse5.serialize(ast);
@@ -58,7 +63,7 @@ function addSemi(match: string) {
 
 export function css(text: string) {
   text = text.replace(APPLY_NO_SEMI, addSemi);
-  return stringifier.stringify(parser.parse(text));
+  return cleaner.minify(stringifier.stringify(parser.parse(text))).styles;
 }
 
 export class GulpTransform extends stream.Transform {

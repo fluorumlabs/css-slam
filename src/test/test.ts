@@ -28,7 +28,7 @@ suite('css-slam', () => {
           border: 2px solid black;
         }
       `;
-      const expected = 'div{color:blue;}button{border:2px solid black;}';
+      const expected = 'div{color:#00f}button{border:2px solid #000}';
       assert.equal(slam.css(text), expected);
     });
     test('fun css features are kept', () => {
@@ -51,26 +51,14 @@ suite('css-slam', () => {
         ':root{',
         '--foo:red;',
         '--border:2px solid black;',
-        '--thing:{',
-        'box-shadow:0 0 0 red;',
-        '};',
+        '--thing:{box-shadow:0 0 0 red};',
         '}',
         'div{',
-        'color:var(--foo, black);',
-        'border:var(--border, 10px dotted orange);',
+        'color:var(--foo,#000);',
+        'border:var(--border,10px dotted orange);',
         '@apply --thing;',
         '}'
       ].join('');
-      assert.equal(slam.css(text), expected);
-    });
-    test('comments are removed', () => {
-      const text = '/* foo */ :root{}';
-      const expected = ':root{}';
-      assert.equal(slam.css(text), expected);
-    });
-    test('@license comments are kept', () => {
-      const text = '/* @license */ /* bar */ :root{}';
-      const expected = '/* @license */:root{}';
       assert.equal(slam.css(text), expected);
     });
     test('@apply missing semicolon is fixed', () => {
@@ -89,7 +77,7 @@ suite('css-slam', () => {
         color: red;
       }
       `;
-      const expected = `button{@apply (--whatever);}span{@apply (--whatever);}:host{@apply --whatever;}div{color:red;}`;
+      const expected = `button{@apply (--whatever);}span{@apply (--whatever);}:host{@apply --whatever;}div{color:red}`;
       assert.equal(slam.css(text), expected);
     });
   });
@@ -113,8 +101,8 @@ suite('css-slam', () => {
       const ast = parse5.parse(slam.html(text));
       const styles = dom5.queryAll(ast, dom5.predicates.hasTagName('style'));
       assert.equal(styles.length, 2);
-      assert.equal(dom5.getTextContent(styles[0]), ':root{--foo:red;}');
-      assert.equal(dom5.getTextContent(styles[1]), 'div{color:var(--foo);}');
+      assert.equal(dom5.getTextContent(styles[0]), ':root{--foo:red}');
+      assert.equal(dom5.getTextContent(styles[1]), 'div{color:var(--foo)}');
     });
   });
 
@@ -129,7 +117,7 @@ suite('css-slam', () => {
           return done(err);
         }
         assert.equal(f, file);
-        assert.equal(f.contents.toString(), ':root{}');
+        assert.equal(f.contents.toString(), '');
         done();
       });
     });
@@ -143,7 +131,7 @@ suite('css-slam', () => {
           return done(err);
         }
         assert.equal(f, file);
-        assert.equal(f.contents.toString(), '<!DOCTYPE html><html><head><style>:root{--foo:red;}</style></head><body></body></html>');
+        assert.equal(f.contents.toString(), '<!DOCTYPE html><html><head><style>:root{--foo:red}</style></head><body></body></html>');
         done();
       });
     });
