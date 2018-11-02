@@ -5,7 +5,8 @@
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "scripts": {
-    "test": "tsc && mocha --ui tdd lib/test/*.js && tslint -p ."
+    "test": "tsc && mocha --ui tdd lib/test/*.js && tslint -p .",
+    "build": "tsc"
   },
   "author": "The Polymer Authors",
   "license": "BSD-3-Clause",
@@ -35,10 +36,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/PolymerLabs/css-slam.git"
+    "url": "git+https://github.com/fluorumlabs/css-slam.git"
   },
   "bugs": {
-    "url": "https://github.com/PolymerLabs/css-slam/issues"
+    "url": "https://github.com/fluorumlabs/css-slam/issues"
   },
-  "homepage": "https://github.com/PolymerLabs/css-slam#readme"
+  "homepage": "https://github.com/fluorumlabs/css-slam#readme"
 }
